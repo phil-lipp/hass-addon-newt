@@ -39,8 +39,14 @@ jobs:
       - name: Apply version bump
         if: steps.versions.outputs.up_to_date == 'false'
         run: |
+          set -euo pipefail
           LATEST="${{ steps.versions.outputs.latest }}"
+          SHA_AMD64=$(curl -fsSL "https://github.com/fosrl/newt/releases/download/${LATEST}/newt_linux_amd64" | sha256sum | cut -d' ' -f1)
+          SHA_ARM64=$(curl -fsSL "https://github.com/fosrl/newt/releases/download/${LATEST}/newt_linux_arm64" | sha256sum | cut -d' ' -f1)
+
           sed -i 's/ARG NEWT_VERSION="[^"]*"/ARG NEWT_VERSION="'"$LATEST"'"/' newt/Dockerfile
+          sed -i 's/ARG NEWT_SHA256_AMD64="[^"]*"/ARG NEWT_SHA256_AMD64="'"$SHA_AMD64"'"/' newt/Dockerfile
+          sed -i 's/ARG NEWT_SHA256_ARM64="[^"]*"/ARG NEWT_SHA256_ARM64="'"$SHA_ARM64"'"/' newt/Dockerfile
           sed -i 's/^version: "[^"]*"/version: "'"$LATEST"'-1"/' newt/config.yaml
 
       - name: Create pull request
@@ -51,6 +57,8 @@ jobs:
           title: "Bump Newt to ${{ steps.versions.outputs.latest }}"
           body: |
             Automated bump to match [fosrl/newt](https://github.com/fosrl/newt) `${{ steps.versions.outputs.latest }}`.
+
+            Updates `NEWT_VERSION` and pinned `NEWT_SHA256_*` checksums in `newt/Dockerfile`.
 
             Before merging a release, add an entry for `${{ steps.versions.outputs.latest }}-1` in `newt/CHANGELOG.md`.
           branch: bump-newt-${{ steps.versions.outputs.latest }}

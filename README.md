@@ -11,3 +11,9 @@ Newt is the main client, connecting to Pangolin, allowing access to services on 
 This is a Home Assistant app that downloads the Newt binary and runs it on your Home Assistant instance. It exposes the ID, Secret, and Endpoint URL as configuration options within Home Assistant for easy deployment. Visit [the docs](https://github.com/phil-lipp/hass-addon-newt/blob/main/newt/DOCS.md) to learn how to install it.
 
 _The code for DNS, mTLS, and Log Level is taken from the work done by [adriaanConijn](https://github.com/adriaanConijn/hass-addon-newt)._
+
+## Future: Pangolin CLI
+
+Upstream Pangolin now recommends the [Pangolin CLI](https://github.com/fosrl/cli) (`pangolin up site`) for new sites. That CLI embeds Newt and uses the same site ID, secret, and endpoint — existing Newt installs keep working.
+
+This repository will add a separate Pangolin Site CLI app later (new slug). Planned migration: stop Newt, install the CLI app with the same credentials, then uninstall Newt. See [newt/DOCS.md](newt/DOCS.md#future-pangolin-cli) for details.
