@@ -2,7 +2,7 @@ name: "Newt - Pangolin Tunnels"
 description: "Secure remote access with Pangolin tunnels."
 maintainer: phil-lipp
 url: https://docs.fossorial.io
-version: "1.19.0-1"
+version: "1.19.0-2"
 slug: "newt"
 image: "ghcr.io/phil-lipp/{arch}-newt"
 boot: auto
@@ -11,21 +11,31 @@ arch:
   - aarch64
   - amd64
 startup: services
-hassio_api: true
 docker_api: true
 options:
-  id: null
-  secret: null
+  id: ""
+  secret: ""
   endpoint: null
   dns: ""
   log_level: "INFO"
+  provisioning_key: ""
   tls_client_cert: ""
+  tls_client_cert_file: ""
+  tls_client_key: ""
+  tls_client_ca: ""
   docker: false
+  custom_env_vars: []
 schema:
-  id: str
-  secret: str
+  id: str?
+  secret: password?
   endpoint: str
   dns: str?
-  log_level: list(DEBUG|INFO|NOTICE|WARN|ERROR)?
+  log_level: list(DEBUG|INFO|WARN|ERROR|FATAL)?
+  provisioning_key: password?
   tls_client_cert: str?
+  tls_client_cert_file: str?
+  tls_client_key: str?
+  tls_client_ca: str?
   docker: bool?
+  custom_env_vars:
+    - "match(^[A-Z_][A-Z0-9_]*=.+$)?"

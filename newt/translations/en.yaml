@@ -12,12 +12,27 @@ configuration:
   dns:
     name: Custom DNS server (optional)
     description: If you need newt to use a custom dns server to resolve the endpoint you can configure it here.
-  tls-client-cert:
-    name: TLS Client certificate path (optional)
-    description: If you use mTLS you can configure the certificate path here. See the documentation for more information.
-  log-level:
+  log_level:
     name: Log level
-    description: The log level to use. Defaults to INFO.
+    description: The log level to use. Defaults to INFO. Valid values are DEBUG, INFO, WARN, ERROR, FATAL.
+  provisioning_key:
+    name: Provisioning key (optional)
+    description: One-time site provisioning key from Pangolin (`spk_...`). When set, Newt exchanges it for an ID and secret and stores them under addon data. Leave empty if you already have an ID and secret.
+  tls_client_cert:
+    name: TLS client certificate PKCS12 path (deprecated)
+    description: Legacy PKCS12 mTLS certificate path. Prefer the PEM cert/key/CA fields below. See the documentation for more information.
+  tls_client_cert_file:
+    name: TLS client certificate file (PEM)
+    description: Path to the client certificate file (PEM/DER) for mTLS with your Pangolin server.
+  tls_client_key:
+    name: TLS client key file (PEM)
+    description: Path to the client private key file (PEM/DER) for mTLS.
+  tls_client_ca:
+    name: TLS client CA file (PEM)
+    description: Path to a CA certificate file used to verify the Pangolin server during mTLS.
   docker:
     name: Docker API access
     description: Allow Newt to access the Docker socket. **You must disable "Protection mode" from the main app page.**
+  custom_env_vars:
+    name: Custom environment variables
+    description: Optional `NAME=value` entries passed through to Newt (for example `MTU=1420` or `BLUEPRINT_FILE=/share/blueprint.yaml`). Protected names such as PATH, HOME, and credential vars are ignored.
